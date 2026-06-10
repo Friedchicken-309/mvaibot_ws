@@ -1,0 +1,60 @@
+# mvaibot_485_driver配置文件 - BEITONG AXIULUO3S 手柄
+# BEITONG AXIULUO3S 手柄/joy键码表：
+# axes[0]:左摇杆-1（右）1（左）
+# axes[1]:左摇杆-1（下）1（上）
+# axes[2]:右摇杆-1（右）1（左）
+# axes[3]:右摇杆-1（下）1（上）
+# axes[6]:十字键-1（右）1（左）
+# axes[7]:右摇杆-1（下）1（上）
+# buttons[0]:A
+# buttons[1]:B
+# buttons[3]:X
+# buttons[4]:Y
+# buttons[6]:LB
+# buttons[7]:RB
+# buttons[8]:LT
+# buttons[9]:RT
+
+# 轴 0: 左转/右转
+# 轴 1: 前进/后退
+# 按钮 8: 使能控制
+
+mvaibot_485_driver:
+  ros__parameters:
+
+    # 线速度轴（前进/后退）
+    axis_linear:
+      x: 1
+
+    # 线速度缩放
+    scale_linear:
+      x: 30
+
+    # 线速度加速档
+    scale_linear_turbo:
+      x: 100
+
+    # 角度轴（舵向，90度对中，0度左转，180度右转）
+    axis_angular:
+      yaw: 0
+
+    # 使能按钮（按住启动）
+    enable_button: 8
+
+    # 加速档按钮（按住启动）
+    enable_turbo_button: 9
+
+    # 方向切换按钮（按下切换前进/后退）
+    button_dir: 0
+
+    # 限位切换按钮（按下循环切换）
+    button_limit: 1
+
+    # 模式切换按钮（按下循环切换）
+    button_mode: 3
+
+    # 发布频率
+    publish_rate: 50.0
+
+    # 死区设置
+    deadzone: 0.05
