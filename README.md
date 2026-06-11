@@ -48,6 +48,7 @@ ros2 run mvaibot_485_driver mvaibot_485_driver
 ros2 run mvaibot_485_driver mvaibot_485_driver \
   --ros-args --params-file src/mvaibot_485_driver/src/mvaibotjoy.yaml
 ```
+--- 
 
 ## 手柄按键映射
 
@@ -76,15 +77,58 @@ ros2 run mvaibot_485_driver mvaibot_485_driver \
 | [6] | `0x00` | 预留 |
 | [7] | sum | 前 7 字节之和的低八位 |
 
+--- 
+
+## mvaibot_description — 机器人模型可视化
+
+通过 RViz2 查看 mvaibot 底盘 URDF 模型。
+
+### 依赖
+
+```bash
+sudo apt install ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-robot-state-publisher ros-$ROS_DISTRO-joint-state-publisher ros-$ROS_DISTRO-rviz2
+```
+
+### 构建
+
+```bash
+cd mvaibot_ws
+colcon build --packages-select mvaibot_description
+source install/setup.bash
+```
+
+### 启动
+
+```bash
+ros2 launch mvaibot_description display.launch.py
+```
+
+启动后会自动打开 RViz2，在左侧面板添加 `RobotModel` 显示插件即可看到底盘模型。
+
+也可指定自定义 URDF 路径：
+
+```bash
+ros2 launch mvaibot_description display.launch.py model:=/path/to/your.urdf
+```
+--- 
 ## 目录结构
 
 ```
 mvaibot_ws/
 ├── src/
-│   └── mvaibot_485_driver/
-│       ├── src/
-│       │   ├── mvaibot_485_driver.cpp    # 驱动节点源码
-│       │   └── mvaibotjoy.yaml           # 参数配置文件
+│   ├── mvaibot_485_driver/
+│   │   ├── src/
+│   │   │   ├── mvaibot_485_driver.cpp    # 驱动节点源码
+│   │   │   └── mvaibotjoy.yaml           # 参数配置文件
+│   │   ├── CMakeLists.txt
+│   │   └── package.xml
+│   └── mvaibot_description/
+│       ├── urdf/
+│       │   └── mvaibot.urdf.xacro        # 底盘 URDF 模型
+│       ├── launch/
+│       │   └── display.launch.py         # RViz 可视化 launch 文件
+│       ├── config/rviz/
+│       │   └── display_model.rviz        # RViz 配置文件
 │       ├── CMakeLists.txt
 │       └── package.xml
 ├── build/
