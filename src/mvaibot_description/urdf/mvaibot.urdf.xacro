@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="mvaibot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ========== 底盘尺寸参数 ========== -->
+  <xacro:property name="base_length" value="0.8" />
+  <xacro:property name="base_width"  value="0.6" />
+  <xacro:property name="base_height" value="0.3" />
+  <!-- base_link 底面离地高度 -->
+  <xacro:property name="base_ground_clearance" value="0.05" />
+
+  <!-- ========== 颜色材质 ========== -->
+  <xacro:macro name="material_grey">
+    <material name="grey">
+      <color rgba="0.5 0.5 0.5 1.0" />
+    </material>
+  </xacro:macro>
+
+
+  <!-- ========== base_link 宏声明 ========== -->
+  <xacro:macro name="base_link_macro" params="length width height mass">
+
+    <!-- base_link (底盘主体) -->
+    <link name="base_link">
+      <visual>
+        <origin xyz="0 0 ${height / 2}" rpy="0 0 0" />
+        <geometry>
+          <box size="${length} ${width} ${height}" />
+        </geometry>
+        <xacro:material_grey />
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 ${height / 2}" rpy="0 0 0" />
+        <geometry>
+          <box size="${length} ${width} ${height}" />
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 ${height / 2}" rpy="0 0 0" />
+        <mass value="${mass}" />
+        <inertia ixx="${0.0833 * mass * (width**2 + height**2)}"
+                 ixy="0" ixz="0"
+                 iyy="${0.0833 * mass * (length**2 + height**2)}"
+                 iyz="0"
+                 izz="${0.0833 * mass * (length**2 + width**2)}" />
+      </inertial>
+    </link>
+
+  </xacro:macro>
+
+  <!-- ========== 调用 base_link 宏，传入底盘参数 ========== -->
+  <xacro:base_link_macro
+    length="${base_length}"
+    width="${base_width}"
+    height="${base_height}"
+    mass="20.0" />
+
+  <!-- ========== base_footprint (地面投影点, 无可视模型) ========== -->
+  <link name="base_footprint" />
+
+  <!-- ========== 关节定义（统一维护） ========== -->
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint" />
+    <child  link="base_link" />
+    <origin xyz="0 0 ${base_ground_clearance}" rpy="0 0 0" />
+  </joint>
+
+</robot>
